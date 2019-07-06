@@ -2,6 +2,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Uses https://swapi.co/ for data
 
+### `npm install`
+### `npm start`
+
 ## Available Scripts
 
 In the project directory, you can run:
