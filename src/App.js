@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {}
+    this.state = { films: [] }
   }
 
   componentDidMount() {
@@ -17,13 +17,26 @@ class App extends Component {
 
     fetch(getPersonURL(id))
       .then(resp => resp.json())
-      .then(json => this.setState({ person: json }))
+      .then((person) => {
+        if(person.films.length) {
+          const promises = person.films.map(
+            (filmUrl) => fetch(filmUrl)
+              .then(resp => resp.json())
+          )
+
+          Promise.all(promises)
+           .then(films => this.setState({ person, films }))
+
+        } else {
+          this.setState({ person })
+        }
+      })
   }
 
   render() {
-    const { person } = this.state
+    const { person, films } = this.state
 
-    person && console.log(person.films)
+    console.log('render')
 
     return (
       <div className="App">
@@ -44,6 +57,23 @@ class App extends Component {
               <h4>{person.name}</h4>
               <h6>{person.height}</h6>
             </section>
+        }
+        {
+          films.length &&
+            <section>
+              <h4>Films</h4>
+              <ul>
+                {
+                  films.map(film => (
+                    <li key={film.url}>
+                      <span>{film.title}</span>
+                      <p>{film.opening_crawl}</p>
+                    </li>
+                  ))
+                }
+              </ul>
+            </section>
+
         }
       </div>
     );
