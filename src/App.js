@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import Search from './Search';
+import SearchResults from './SearchResults';
 
 const API_BASE = 'https://swapi.co/api'
 const getPersonURL = id => `${API_BASE}/people/${id}`
@@ -14,6 +17,8 @@ class App extends Component {
 
   componentDidMount() {
     const id = 1
+
+    return
 
     fetch(getPersonURL(id))
       .then(resp => resp.json())
@@ -36,46 +41,40 @@ class App extends Component {
   render() {
     const { person, films } = this.state
 
-    console.log('render')
-
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-        {
-          person &&
-            <section>
-              <h4>{person.name}</h4>
-              <h6>{person.height}</h6>
-            </section>
-        }
-        {
-          films.length &&
-            <section>
-              <h4>Films</h4>
-              <ul>
-                {
-                  films.map(film => (
-                    <li key={film.url}>
-                      <span>{film.title}</span>
-                      <p>{film.opening_crawl}</p>
-                    </li>
-                  ))
-                }
-              </ul>
-            </section>
+      <Container maxWidth="sm">
+        <Box my={4}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Starwars
+          </Typography>
+          <Search />
+          <SearchResults />
+          {
+            person &&
+              <section>
+                <h4>{person.name}</h4>
+                <h6>{person.height}</h6>
+              </section>
+          }
+          {
+            films.length &&
+              <section>
+                <h4>Films</h4>
+                <ul>
+                  {
+                    films.map(film => (
+                      <li key={film.url}>
+                        <span>{film.title}</span>
+                        <p>{film.opening_crawl}</p>
+                      </li>
+                    ))
+                  }
+                </ul>
+              </section>
 
-        }
-      </div>
+          }
+        </Box>
+      </Container>
     );
   }
 }
